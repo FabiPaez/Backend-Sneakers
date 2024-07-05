@@ -3,14 +3,11 @@ require('dotenv').config({ path: './credenciales.env' });
 const express = require('express');
 const cors = require('cors');
 const sequelize = require('./config/database');
-const User = require('./models/User');
-const Product = require('./models/Product');
-const ShoppingCart = require('./models/ShoppingCart');
-const CartItem = require('./models/CartItem');
+const { User, Product, ShoppingCart, CartItem } = require('./models');
 const initializeProducts = require('./initializeProducts');
-const userRoutes = require('../routes/userRoutes');
-const productRoutes = require('../routes/productRoutes');
-const cartRoutes = require('../routes/cartRoutes');
+const userRoutes = require('./routes/userRoutes');
+const productRoutes = require('./routes/productRoutes');
+const cartRoutes = require('./routes/cartRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -41,7 +38,7 @@ const startServer = async () => {
       res.send('Hello World! This is the root route.');
     });
 
-    // await initializeProducts(); // Inicializar los productos
+    await initializeProducts(); // Inicializar los productos
 
     app.listen(PORT, () => {
       console.log(`Server is running on port ${PORT}`);
