@@ -9,9 +9,9 @@ const Product = require('../models/Product');
 const ShoppingCart = require('../models/ShoppingCart');
 const CartItem = require('../models/CartItem');
 const initializeProducts = require('./initializeProducts');
-const userRoutes = require('./routes/userRoutes');
-const productRoutes = require('./routes/productRoutes');
-const cartRoutes = require('./routes/cartRoutes');
+const userRoutes = require('../routes/userRoutes');
+const productRoutes = require('../routes/productRoutes');
+const cartRoutes = require('../routes/cartRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
