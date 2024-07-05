@@ -19,13 +19,20 @@ app.use('/api/users', userRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/cart', cartRoutes);
 
+sequelize.authenticate()
+  .then(() => {
+    console.log('Connection has been established successfully.');
+  })
+  .catch(err => {
+    console.error('Unable to connect to the database:', err);
+  });
 // Permitir solicitudes desde tu dominio de GitHub Pages
 const corsOptions = {
     origin: 'https://fabipaez.github.io',
     optionsSuccessStatus: 200
-  };
+};
   
-  app.use(cors(corsOptions));
+app.use(cors(corsOptions));
 
 const startServer = async () => {
     try {
