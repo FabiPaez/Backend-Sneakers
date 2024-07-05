@@ -1,38 +1,33 @@
 const { Sequelize } = require('sequelize');
-require('dotenv').config({ path: '../credenciales.env' });
+const url = require('url');
 
 let sequelize;
 
 if (process.env.DATABASE_URL) {
-    // Usar la URL de conexión proporcionada por Heroku (JawsDB)
-    sequelize = new Sequelize(process.env.DATABASE_URL, {
-        dialect: 'mysql',
-        protocol: 'mysql',
-        dialectOptions: {
-            ssl: {
-                require: true,
-                rejectUnauthorized: false
-            }
-        }
-    });
-} else {
-    // Verifica que todas las variables de entorno estén presentes
-    const { DB_NAME, DB_USER, DB_PASSWORD, DB_HOST, DB_PORT } = process.env;
-    if (!DB_NAME || !DB_USER || !DB_PASSWORD || !DB_HOST || !DB_PORT) {
-        throw new Error('Faltan variables de entorno para la conexión a la base de datos');
-    }
+  const params = url.parse(process.env.DATABASE_URL);
+  const auth = params.auth ? params.auth.split(':') : [null, null];
 
-    // Usar las credenciales locales desde credenciales.env
-    sequelize = new Sequelize(
-        DB_NAME,
-        DB_USER,
-        DB_PASSWORD,
-        {
-            host: DB_HOST,
-            dialect: 'mysql',
-            port: DB_PORT
-        }
-    );
+  sequelize = new Sequelize(params.pathname ? params.pathname.substring(1) : null, auth[0], auth[1], {
+    host: params.hostname,
+    port: params.port,
+    dialect: params.protocol ? params.protocol.replace(':', '') : null,
+    dialectOptions: {
+      ssl: {
+        require: true,
+        rejectUnauthorized: false
+      }
+    }
+  });
+} else {
+  sequelize = new Sequelize(
+    process.env.DB_NAME,
+    process.env.DB_USER,
+    process.env.DB_PASS,
+    {
+      host: process.env.DB_HOST,
+      dialect: process.env.DB_DIALECT,
+    }
+  );
 }
 
 module.exports = sequelize;
