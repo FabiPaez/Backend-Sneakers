@@ -16,18 +16,23 @@ if (process.env.DATABASE_URL) {
         }
     });
 } else {
+    // Verifica que todas las variables de entorno estén presentes
+    const { DB_NAME, DB_USER, DB_PASSWORD, DB_HOST, DB_PORT } = process.env;
+    if (!DB_NAME || !DB_USER || !DB_PASSWORD || !DB_HOST || !DB_PORT) {
+        throw new Error('Faltan variables de entorno para la conexión a la base de datos');
+    }
+
     // Usar las credenciales locales desde credenciales.env
     sequelize = new Sequelize(
-        process.env.DB_NAME,
-        process.env.DB_USER,
-        process.env.DB_PASSWORD || null,
+        DB_NAME,
+        DB_USER,
+        DB_PASSWORD,
         {
-            host: process.env.DB_HOST,
+            host: DB_HOST,
             dialect: 'mysql',
-            port: process.env.DB_PORT
+            port: DB_PORT
         }
     );
 }
 
 module.exports = sequelize;
-
