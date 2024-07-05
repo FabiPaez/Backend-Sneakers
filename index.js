@@ -20,7 +20,7 @@ app.use('/api/products', productRoutes);
 app.use('/api/cart', cartRoutes);
 
 const corsOptions = {
-  origin: 'https://fabipaez.github.io',
+  origin: '*', // Permite solicitudes desde cualquier origen
   optionsSuccessStatus: 200
 };
 
