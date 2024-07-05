@@ -19,13 +19,24 @@ app.use('/api/users', userRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/cart', cartRoutes);
 
-sequelize.authenticate()
-  .then(() => {
-    console.log('Connection has been established successfully.');
-  })
-  .catch(err => {
-    console.error('Unable to connect to the database:', err);
-  });
+// // Conectar a la base de datos
+// sequelize.authenticate()
+//   .then(() => {
+//     console.log('Connection has been established successfully.');
+//   })
+//   .catch(err => {
+//     console.error('Unable to connect to the database:', err);
+//   });
+
+// // Sincronizar la base de datos
+// sequelize.sync()
+//   .then(() => {
+//     console.log('Database synchronized');
+//   })
+//   .catch(err => {
+//     console.error('Error synchronizing the database:', err);
+//   });
+
 // Permitir solicitudes desde tu dominio de GitHub Pages
 const corsOptions = {
     origin: 'https://fabipaez.github.io',
@@ -38,7 +49,10 @@ const startServer = async () => {
     try {
         await sequelize.sync({ force: true });
         console.log('Database synchronized');
-        await initializeProducts(); // Inicializar los productos
+        app.get('/', (req, res) => {
+            res.send('Hello World! This is the root route.');
+          });
+        //await initializeProducts(); // Inicializar los productos
         app.listen(PORT, () => {
             console.log(`Server is running on port ${PORT}`);
         });
