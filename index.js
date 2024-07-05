@@ -12,17 +12,18 @@ const cartRoutes = require('./routes/cartRoutes');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-app.use(cors());
+app.use(cors({
+  origin: 'https://fabipaez.github.io', // Reemplaza con la URL de tu frontend
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true
+}));
 app.use(express.json());
 
 app.use('/api/users', userRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/cart', cartRoutes);
 
-const corsOptions = {
-  origin: '*', // Permite solicitudes desde cualquier origen
-  optionsSuccessStatus: 200
-};
+
 
 app.use(cors(corsOptions));
 
