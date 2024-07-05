@@ -19,6 +19,14 @@ app.use('/api/users', userRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/cart', cartRoutes);
 
+// Permitir solicitudes desde tu dominio de GitHub Pages
+const corsOptions = {
+    origin: 'https://fabipaez.github.io',
+    optionsSuccessStatus: 200
+  };
+  
+  app.use(cors(corsOptions));
+
 const startServer = async () => {
     try {
         await sequelize.sync({ force: true });
